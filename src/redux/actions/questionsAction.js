@@ -7,3 +7,4 @@ export const handleFetchQuestions = (questions) => {
     payload: questions
   }
 }
+

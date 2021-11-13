@@ -2,11 +2,13 @@ import {combineReducers, createStore} from "redux";
 import {devToolsEnhancer} from "redux-devtools-extension";
 import settingsReducer from "./reducers/settingsReducer";
 import questionsReducer from "./reducers/questionsReducer";
+import statisticsReducer from "./reducers/statisticsReducer";
 
 
 const rootReducers = combineReducers({
-  settingsReducer: settingsReducer,
-  questionsReducer: questionsReducer
+  settings: settingsReducer,
+  questionsReducer: questionsReducer,
+  statistics: statisticsReducer
 })
 
 const saveToLocalStorage = (state) => {
@@ -31,6 +33,8 @@ const persistedStore = {questionsReducer: loadFromLocalStorage()};
 
 
 const store = createStore(rootReducers, persistedStore, devToolsEnhancer())
+console.log(store.getState())
+
 
 store.subscribe(() => {
   saveToLocalStorage(store.getState());

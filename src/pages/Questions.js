@@ -4,6 +4,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
 import {handleScoreChange} from "../redux/actions/settingActions";
 import {decode} from "html-entities";
+import {handleAddAnswer} from "../redux/actions/statisticsAction";
 
 
 const getRandomInt = (max) => {
@@ -13,30 +14,40 @@ const getRandomInt = (max) => {
 const Questions = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const {name, score} = useSelector(state => state.settingsReducer)
+  const {name, score} = useSelector(state => state.settings)
   const {questions} = useSelector(state => state.questionsReducer)
   const [questionIndex, setQuestionIndex] = useState(0);
   const [options, setOptions] = useState([]);
   const [selected, setSelected] = useState(null);
+  const [answer, setAnswer] = useState({
+    question: '',
+    currentAnswer: '',
+    correctAnswer: ''
+  });
 
   useEffect(() => {
     if (questions?.length) {
       // загрузка вопроса по индексу
-      const question = questions[questionIndex]
+      const questionInfo = questions[questionIndex]
       // загрузка неправильных ответов
-      let answers = [...question.incorrect_answers]
+      let answers = [...questionInfo.incorrect_answers]
       // добавление в массив ответов правильный ответ на рандомное место
-      answers.splice(getRandomInt(3), 0, question.correct_answer)
+      answers.splice(getRandomInt(3), 0, questionInfo.correct_answer)
       setOptions(answers)
     }
   }, [questions, questionIndex])
 
 
   const handleClickAnswer = (data) => {
-    const question = questions[questionIndex];
-    if (data === question.correct_answer) {
+    const questionInfo = questions[questionIndex];
+    if (data === questionInfo.correct_answer) {
       dispatch(handleScoreChange(score + 1));
     }
+    setAnswer({
+      question: questionInfo.question,
+      correctAnswer: questionInfo.correct_answer,
+      currentAnswer: data
+    })
     setSelected(data)
   };
 
@@ -52,6 +63,7 @@ const Questions = () => {
 
   const handleNextQuestion = () => {
     if (selected) {
+      dispatch(handleAddAnswer(answer))
       setSelected(null)
       if (questionIndex + 1 < questions.length) {
         setQuestionIndex(questionIndex + 1);
@@ -64,7 +76,7 @@ const Questions = () => {
   return (
     <Box>
       <Typography variant={"h4"}>Hello {name}</Typography>
-      <Typography mt={2} variant={"h4"}>Question №{questionIndex + 1}</Typography>
+      <Typography mt={2} variant={"h4"}>Question № {questionIndex + 1}</Typography>
       <Typography mt={5}>{decode(questions[questionIndex]?.question)}</Typography>
 
       {

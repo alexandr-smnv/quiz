@@ -1,20 +1,19 @@
-// import {FETCH_QUESTIONS} from "../actionsTypes";
-//
-//
-// const initialState = {
-//   statistics: []
-// }
-//
-// const questionsReducer = (state = initialState, action) => {
-//   switch (action.type) {
-//     case FETCH_QUESTIONS: {
-//       return {
-//         ...state, questions: action.payload
-//       }
-//     }
-//     default:
-//       return state
-//   }
-// }
+import {ADD_ANSWER, CLEAN_STATISTIC} from "../actionsTypes";
 
-export default questionsReducer;
+
+const initialState = []
+
+const statisticsReducer = (state = initialState, action) => {
+  switch (action.type) {
+    case ADD_ANSWER: {
+      return [...state, action.payload]
+    }
+    case CLEAN_STATISTIC: {
+      return []
+    }
+    default:
+      return state
+  }
+}
+
+export default statisticsReducer;

@@ -6,6 +6,7 @@ import Settings from "./pages/Settings";
 import Questions from "./pages/Questions";
 import FinalScreen from "./pages/FinalScreen";
 import {Box, Container, Typography} from "@mui/material";
+import StatisticScreen from "./pages/StatisticScreen";
 
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
             <Route path="/quiz" element={<Settings/>}/>
             <Route path="/questions" element={<Questions/>} />
             <Route path="/score" element={<FinalScreen/>} />
+            <Route path="/statistic" element={<StatisticScreen/>} />
           </Routes>
         </Router>
       </Box>
