@@ -17,7 +17,7 @@ function App() {
         </Typography>
         <Router>
           <Routes>
-            <Route path="/" element={<Settings/>}/>
+            <Route path="/quiz" element={<Settings/>}/>
             <Route path="/questions" element={<Questions/>} />
             <Route path="/score" element={<FinalScreen/>} />
           </Routes>

@@ -51,11 +51,13 @@ const Questions = () => {
   };
 
   const handleNextQuestion = () => {
-    setSelected(null)
-    if (questionIndex + 1 < questions.length) {
-      setQuestionIndex(questionIndex + 1);
-    } else {
-      navigate("/score");
+    if (selected) {
+      setSelected(null)
+      if (questionIndex + 1 < questions.length) {
+        setQuestionIndex(questionIndex + 1);
+      } else {
+        navigate("/score");
+      }
     }
   }
 

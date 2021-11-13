@@ -12,7 +12,7 @@ const FinalScreen = () => {
   const handleNewQuiz = () => {
     dispatch(handleScoreChange(0))
     dispatch(handleAmountChange(10))
-    navigate('/')
+    navigate('/quiz')
   }
 
   return (
