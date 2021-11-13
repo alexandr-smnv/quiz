@@ -9,11 +9,10 @@ import {Box, Container, Typography} from "@mui/material";
 
 
 function App() {
-
   return (
     <Container maxWidth="sm">
       <Box textAlign="center" mt={5}>
-        <Typography variant="h2" fontWeight="bold">
+        <Typography variant="h2" fontWeight="bold" mb={5}>
           Quiz App
         </Typography>
         <Router>

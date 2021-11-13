@@ -1,20 +1,15 @@
 import React from 'react';
 import {Box, FormControl, TextField} from "@mui/material";
-import {handleAmountChange} from "../redux/actions";
-import {useDispatch} from "react-redux";
 
-const TextFieldComp = () => {
-  const dispatch = useDispatch()
-  const handleChange = (e) => {
-    dispatch(handleAmountChange(e.target.value))
-  }
-  
+const TextFieldComp = ({name, type, label, handleChange}) => {
+
   return (
     <Box mt={3} width={"100%"}>
       <FormControl fullWidth size={"small"}>
         <TextField
-          type={"number"}
-          label={"Amount of questions"}
+          name={name}
+          type={type}
+          label={label}
           onChange={handleChange}
           size={"small"}
           variant={"outlined"}
