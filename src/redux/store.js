@@ -14,22 +14,38 @@ const rootReducers = combineReducers({
 const saveToLocalStorage = (state) => {
   try {
     localStorage.setItem('questions', JSON.stringify(state.questionsReducer));
+    localStorage.setItem('statistic', JSON.stringify(state.statistics));
   } catch (e) {
     console.error(e);
   }
 };
 
-const loadFromLocalStorage = () => {
+const loadQuestionFromLocalStorage = () => {
   try {
-    const stateStr = localStorage.getItem('questions');
-    return stateStr ? JSON.parse(stateStr) : undefined;
+    const questionStr = localStorage.getItem('questions');
+
+    return questionStr ? JSON.parse(questionStr) : undefined;
   } catch (e) {
     console.error(e);
     return undefined;
   }
 };
 
-const persistedStore = {questionsReducer: loadFromLocalStorage()};
+const loadStatisticFromLocalStorage = () => {
+  try {
+    const statisticStr = localStorage.getItem('statistic');
+
+    return statisticStr ? JSON.parse(statisticStr) : undefined;
+  } catch (e) {
+    console.error(e);
+    return undefined;
+  }
+};
+
+const persistedStore = {
+  questionsReducer: loadQuestionFromLocalStorage(),
+  statistics: loadStatisticFromLocalStorage()
+};
 
 
 const store = createStore(rootReducers, persistedStore, devToolsEnhancer())

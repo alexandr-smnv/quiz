@@ -2,31 +2,45 @@ import React, {useEffect, useState} from 'react';
 import {Box, Button, Grid, Typography} from "@mui/material";
 import {useDispatch, useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
-import {handleScoreChange} from "../redux/actions/settingActions";
+import {handleScoreChange} from "../redux/actions/questionsAction";
 import {decode} from "html-entities";
 import {handleAddAnswer} from "../redux/actions/statisticsAction";
 
-
+// функция рандомного числа
 const getRandomInt = (max) => {
   return Math.floor(Math.random() * Math.floor(max))
 }
 
-const Questions = () => {
+const QuestionsScreen = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const {name, score} = useSelector(state => state.settings)
-  const {questions} = useSelector(state => state.questionsReducer)
+  const {name} = useSelector(state => state.settings)
+  const {questions, score} = useSelector(state => state.questionsReducer)
+  // индекс текущего вопроса
   const [questionIndex, setQuestionIndex] = useState(0);
+  // варианты ответов
   const [options, setOptions] = useState([]);
+  // заполняется когда принят ответ
   const [selected, setSelected] = useState(null);
+  // данные об ответе (для статистики)
   const [answer, setAnswer] = useState({
     question: '',
     currentAnswer: '',
     correctAnswer: ''
   });
 
+
   useEffect(() => {
     if (questions?.length) {
+      // индекс вопроса из localStorage
+      const indexStr = localStorage.getItem('indexQuestion')
+      // если индекс 0 и есть в localStorage данные об индексе - берем их
+      // если нет то записываем в localStorage индекс текущего вопроса
+      if (!questionIndex && indexStr) {
+        setQuestionIndex(JSON.parse(indexStr))
+      } else {
+        localStorage.setItem('indexQuestion', JSON.stringify(questionIndex))
+      }
       // загрузка вопроса по индексу
       const questionInfo = questions[questionIndex]
       // загрузка неправильных ответов
@@ -37,9 +51,10 @@ const Questions = () => {
     }
   }, [questions, questionIndex])
 
-
+  // нажатие по ответу
   const handleClickAnswer = (data) => {
     const questionInfo = questions[questionIndex];
+    // обработка счетчика правильных ответов
     if (data === questionInfo.correct_answer) {
       dispatch(handleScoreChange(score + 1));
     }
@@ -51,6 +66,7 @@ const Questions = () => {
     setSelected(data)
   };
 
+  // функция для окрашивания правильного и неправильного ответов
   const handleSelect = (data) => {
     const question = questions[questionIndex];
     // если выбранный ответ правильный - выделить зеленым
@@ -61,6 +77,7 @@ const Questions = () => {
     else if (data === question.correct_answer) return "success";
   };
 
+  // переход на следующий вопрос
   const handleNextQuestion = () => {
     if (selected) {
       dispatch(handleAddAnswer(answer))
@@ -70,12 +87,19 @@ const Questions = () => {
       } else {
         navigate("/score");
       }
+    } else {
+      // добавить alert
+      console.log('Выберите вариант ответа')
     }
+  }
+
+  const handleExit = () => {
+    navigate('/quiz')
   }
 
   return (
     <Box>
-      <Typography variant={"h4"}>Hello {name}</Typography>
+      <Typography variant={"h4"}>Hello, {name ? name : "Dear friend"}!!!</Typography>
       <Typography mt={2} variant={"h4"}>Question № {questionIndex + 1}</Typography>
       <Typography mt={5}>{decode(questions[questionIndex]?.question)}</Typography>
 
@@ -96,10 +120,10 @@ const Questions = () => {
 
       <Grid mt={4} justifyContent={"center"} container spacing={2}>
         <Grid item xs={4}>
-          <Button color={"error"} fullWidth variant="contained">Exit</Button>
+          <Button color={"error"} onClick={handleExit} fullWidth variant="contained">Exit</Button>
         </Grid>
         <Grid item xs={4}>
-          <Button onClick={() => handleNextQuestion()} color={'success'} fullWidth variant="contained">Next</Button>
+          <Button onClick={handleNextQuestion} color={'success'} fullWidth variant="contained">Next</Button>
         </Grid>
       </Grid>
 
@@ -108,4 +132,4 @@ const Questions = () => {
   );
 };
 
-export default Questions;
+export default QuestionsScreen;

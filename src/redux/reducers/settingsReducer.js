@@ -1,12 +1,11 @@
-import {CHANGE_AMOUNT, CHANGE_SCORE, CHANGE_SETTINGS} from "../actionsTypes";
+import {CHANGE_AMOUNT, CHANGE_SETTINGS} from "../actionsTypes";
 
 const initialState = {
   name: "",
   question_category: "",
   question_difficulty: "",
   question_type: "",
-  amount_of_question: 10,
-  score: 0
+  amount_of_question: "",
 }
 
 const settingsReducer = (state = initialState, action) => {
@@ -25,11 +24,6 @@ const settingsReducer = (state = initialState, action) => {
       return {
         ...state,
         amount_of_question: action.payload
-      }
-    case CHANGE_SCORE:
-      return {
-        ...state,
-        score: action.payload
       }
     default:
       return state

@@ -1,19 +1,27 @@
 import React, {useState} from 'react';
-import SelectField from "../components/SelectField";
-import {Box, Button, CircularProgress, Typography} from "@mui/material";
-import TextFieldComp from "../components/TextFieldComp";
-import useAxios from "../hooks/useAxios";
-import {useNavigate} from 'react-router-dom';
-import {difficultyOptions, typeOptions} from "../data/data";
-import {useDispatch} from "react-redux";
-import {handleChangeSettings} from "../redux/actions/settingActions";
-import axios from "axios";
-import {handleFetchQuestions} from "../redux/actions/questionsAction";
 
-const Settings = () => {
+import {useNavigate} from 'react-router-dom';
+import {useDispatch} from "react-redux";
+import axios from "axios";
+
+import {Box, Button, CircularProgress, Typography} from "@mui/material";
+
+import SelectField from "../components/SelectField";
+import TextFieldComp from "../components/TextFieldComp";
+
+import {handleChangeSettings} from "../redux/actions/settingActions";
+import {handleFetchQuestions, handleScoreChange} from "../redux/actions/questionsAction";
+
+import useAxios from "../hooks/useAxios";
+import {difficultyOptions, typeOptions} from "../data/data";
+import {handleCleanStatistic} from "../redux/actions/statisticsAction";
+
+
+const SettingsScreen = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const resCategory = useAxios({url: "api_category.php"})
+  // данные для получения массива вопросов
   const [settings, setSettings] = useState({
     name: "",
     category: "",
@@ -22,10 +30,7 @@ const Settings = () => {
     amount: 10
   });
 
-  const handleChange = (e) => {
-    setSettings({...settings, [e.target.name]: e.target.value})
-  }
-
+  // ==== формирование адресной строки для отправки
   let apiUrl = `/api.php?amount=${settings.amount}`
 
   if (settings.category) {
@@ -38,12 +43,39 @@ const Settings = () => {
     apiUrl = apiUrl.concat(`&type=${settings.type}`)
   }
 
+  // ==== формирование адресной строки для отправки
+
+  // запрос на сервер, запись полученных ответов в redux
   const fetchQuestions = () => {
     axios({url: apiUrl})
       .then(response => dispatch(handleFetchQuestions(response.data.results)))
       .then(navigate('/questions'))
   }
 
+  // запись параметров из inputs
+  const handleChange = (e) => {
+    setSettings({...settings, [e.target.name]: e.target.value})
+  }
+
+  // submit формы (запись параметров в redux, отправка запроса на сервер)
+  const handleSubmit = (event) => {
+    event.preventDefault()
+    // запись параметров в redux
+    dispatch(handleChangeSettings(settings))
+    fetchQuestions()
+    // удаление предыдущего счетчика
+    dispatch(handleScoreChange(0))
+    // удаление предыдущие статистики
+    dispatch(handleCleanStatistic())
+    // удаление из localStorage индекса текущего вопроса
+    localStorage.removeItem('indexQuestion')
+  }
+
+  const handleContinueQuiz = () => {
+    navigate('/questions')
+  }
+
+  // отображение загрузки
   if (resCategory.loading) {
     return (
       <Box mt={30}>
@@ -52,19 +84,13 @@ const Settings = () => {
     )
   }
 
+  // отображение ошибки
   if (resCategory.error) {
     return (
       <Typography variant={"h6"} mt={20} color={"red"}>
         Some Want Wrong!
       </Typography>
     )
-  }
-
-  const handleSubmit = (event) => {
-    event.preventDefault()
-    dispatch(handleChangeSettings(settings))
-    fetchQuestions()
-
   }
 
   return (
@@ -104,11 +130,17 @@ const Settings = () => {
       />
       <Box mt={3} width={"100%"}>
         <Button fullWidth variant={"contained"} type={"submit"}>
-          Get Started
+          Get new quiz
+        </Button>
+      </Box>
+
+      <Box mt={3} width={"100%"}>
+        <Button fullWidth variant={"contained"} color={'success'} onClick={handleContinueQuiz}>
+          Continue quiz
         </Button>
       </Box>
     </form>
   );
 };
 
-export default Settings;
+export default SettingsScreen;

@@ -1,4 +1,4 @@
-import {FETCH_QUESTIONS} from "../actionsTypes";
+import {CHANGE_SCORE, FETCH_QUESTIONS} from "../actionsTypes";
 
 
 export const handleFetchQuestions = (questions) => {
@@ -8,3 +8,9 @@ export const handleFetchQuestions = (questions) => {
   }
 }
 
+export const handleScoreChange = (score) => {
+  return {
+    type: CHANGE_SCORE,
+    payload: score
+  }
+}

@@ -1,22 +1,24 @@
 import React from 'react';
 import {useDispatch, useSelector} from "react-redux";
+import {useNavigate} from "react-router-dom";
 import {Box, Button, Grid, Typography} from "@mui/material";
-import {Link, useNavigate} from "react-router-dom";
-import {handleAmountChange, handleScoreChange} from "../redux/actions/settingActions";
 import {handleCleanStatistic} from "../redux/actions/statisticsAction";
+import {handleScoreChange} from "../redux/actions/questionsAction";
 
 const FinalScreen = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const {score} = useSelector(state => state.settings)
+  const {score} = useSelector(state => state.questionsReducer)
 
+  // переход для создания нового quiz
   const handleNewQuiz = () => {
     dispatch(handleScoreChange(0))
-    dispatch(handleAmountChange(10))
     dispatch(handleCleanStatistic())
+    localStorage.removeItem('indexQuestion')
     navigate('/quiz')
   }
 
+  // переход для просмотра статистика
   const handleStatistic = () => {
     navigate('/statistic')
   }

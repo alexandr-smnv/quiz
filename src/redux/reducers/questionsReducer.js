@@ -1,8 +1,9 @@
-import {FETCH_QUESTIONS} from "../actionsTypes";
+import {CHANGE_SCORE, FETCH_QUESTIONS} from "../actionsTypes";
 
 
 const initialState = {
-  questions: []
+  questions: [],
+  score: 0
 }
 
 const questionsReducer = (state = initialState, action) => {
@@ -12,6 +13,11 @@ const questionsReducer = (state = initialState, action) => {
         ...state, questions: action.payload
       }
     }
+    case CHANGE_SCORE:
+      return {
+        ...state,
+        score: action.payload
+      }
     default:
       return state
   }
