@@ -1,7 +1,7 @@
 import React from 'react';
 import {Box, FormControl, TextField} from "@mui/material";
 
-const TextFieldComp = ({name, type, label, handleChange}) => {
+const TextFieldComp = ({name, type, label, value, handleChange}) => {
 
   return (
     <Box mt={3} width={"100%"}>
@@ -10,6 +10,7 @@ const TextFieldComp = ({name, type, label, handleChange}) => {
           name={name}
           type={type}
           label={label}
+          value={value}
           onChange={handleChange}
           size={"small"}
           variant={"outlined"}

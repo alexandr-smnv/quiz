@@ -1,4 +1,4 @@
-import {CHANGE_SCORE, FETCH_QUESTIONS} from "../actionsTypes";
+import {CHANGE_SCORE, CLEAN_QUESTIONS, FETCH_QUESTIONS} from "../actionsTypes";
 
 
 const initialState = {
@@ -18,6 +18,9 @@ const questionsReducer = (state = initialState, action) => {
         ...state,
         score: action.payload
       }
+    case CLEAN_QUESTIONS:
+      return initialState
+
     default:
       return state
   }

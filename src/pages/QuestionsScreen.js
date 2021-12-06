@@ -100,8 +100,8 @@ const QuestionsScreen = () => {
   return (
     <Box>
       <Typography variant={"h4"}>Hello, {name ? name : "Dear friend"}!!!</Typography>
-      <Typography mt={2} variant={"h4"}>Question № {questionIndex + 1}</Typography>
-      <Typography mt={5}>{decode(questions[questionIndex]?.question)}</Typography>
+      <Typography mt={1} variant={"h4"}>Question № {questionIndex + 1}</Typography>
+      <Typography mt={2} fontWeight={700}>{decode(questions[questionIndex]?.question)}</Typography>
 
       {
         options.map((data, id) => (
@@ -118,7 +118,7 @@ const QuestionsScreen = () => {
         ))
       }
 
-      <Grid mt={4} justifyContent={"center"} container spacing={2}>
+      <Grid mt={2} justifyContent={"center"} container spacing={2}>
         <Grid item xs={4}>
           <Button color={"error"} onClick={handleExit} fullWidth variant="contained">Exit</Button>
         </Grid>
@@ -127,7 +127,7 @@ const QuestionsScreen = () => {
         </Grid>
       </Grid>
 
-      <Box mt={5}>Score: {score} / {questions.length}</Box>
+      <Box mt={3}>Score: {score} / {questions.length}</Box>
     </Box>
   );
 };

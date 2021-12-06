@@ -78,7 +78,7 @@ const SettingsScreen = () => {
   // отображение загрузки
   if (resCategory.loading) {
     return (
-      <Box mt={30}>
+      <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: 5 }}>
         <CircularProgress />
       </Box>
     )
@@ -94,52 +94,60 @@ const SettingsScreen = () => {
   }
 
   return (
-    <form onSubmit={handleSubmit}>
-      <TextFieldComp
-        name="name"
-        type="text"
-        label="Enter your name"
-        handleChange={handleChange}
-      />
-      <SelectField
-        name="category"
-        options={resCategory.response.trivia_categories}
-        label="Category"
-        value={settings.category}
-        handleChange={handleChange}
-      />
-      <SelectField
-        name="difficulty"
-        options={difficultyOptions}
-        label="Difficulty"
-        value={settings.difficulty}
-        handleChange={handleChange}
-      />
-      <SelectField
-        name="type"
-        options={typeOptions}
-        label="Type"
-        value={settings.type}
-        handleChange={handleChange}
-      />
-      <TextFieldComp
-        name="amount"
-        type="number"
-        label="Amount of questions"
-        handleChange={handleChange}
-      />
-      <Box mt={3} width={"100%"}>
-        <Button fullWidth variant={"contained"} type={"submit"}>
-          Get new quiz
-        </Button>
-      </Box>
+      <form onSubmit={handleSubmit}>
+        <TextFieldComp
+          name="name"
+          type="text"
+          label="Enter your name"
+          value={settings.name}
+          handleChange={handleChange}
+        />
+        <SelectField
+          name="category"
+          options={resCategory.response.trivia_categories}
+          label="Category"
+          value={settings.category}
+          handleChange={handleChange}
+        />
+        <SelectField
+          name="difficulty"
+          options={difficultyOptions}
+          label="Difficulty"
+          value={settings.difficulty}
+          handleChange={handleChange}
+        />
+        <SelectField
+          name="type"
+          options={typeOptions}
+          label="Type"
+          value={settings.type}
+          handleChange={handleChange}
+        />
+        <TextFieldComp
+          name="amount"
+          type="number"
+          label="Amount of questions"
+          value={settings.amount}
+          handleChange={handleChange}
+        />
+        <Box mt={3} width={"100%"}>
+          <Button fullWidth variant={"contained"} type={"submit"}>
+            Get new quiz
+          </Button>
+        </Box>
 
-      <Box mt={3} width={"100%"}>
-        <Button fullWidth variant={"contained"} color={'success'} onClick={handleContinueQuiz}>
-          Continue quiz
-        </Button>
-      </Box>
-    </form>
+        <Box mt={3} width={"100%"}>
+          <Button fullWidth variant={"contained"} color={'success'} onClick={handleContinueQuiz}>
+            Continue quiz
+          </Button>
+        </Box>
+
+        <Box mt={3} width={"100%"}>
+          <Button fullWidth variant={"contained"} color={'secondary'} onClick={() => navigate('/create')}>
+            Create quiz
+          </Button>
+        </Box>
+      </form>
   );
 };
 

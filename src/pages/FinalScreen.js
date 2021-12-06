@@ -1,9 +1,9 @@
 import React from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import {useNavigate} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {Box, Button, Grid, Typography} from "@mui/material";
 import {handleCleanStatistic} from "../redux/actions/statisticsAction";
-import {handleScoreChange} from "../redux/actions/questionsAction";
+import {handleCleanQuestions} from "../redux/actions/questionsAction";
 
 const FinalScreen = () => {
   const dispatch = useDispatch()
@@ -12,15 +12,10 @@ const FinalScreen = () => {
 
   // переход для создания нового quiz
   const handleNewQuiz = () => {
-    dispatch(handleScoreChange(0))
+    dispatch(handleCleanQuestions())
     dispatch(handleCleanStatistic())
     localStorage.removeItem('indexQuestion')
     navigate('/quiz')
-  }
-
-  // переход для просмотра статистика
-  const handleStatistic = () => {
-    navigate('/statistic')
   }
 
   return (
@@ -31,7 +26,7 @@ const FinalScreen = () => {
           <Button variant={"contained"} color={"success"} onClick={handleNewQuiz}>New Quiz</Button>
         </Grid>
         <Grid item xs={4}>
-            <Button variant={"contained"} color={"primary"} onClick={handleStatistic}>Statistic</Button>
+          <Button component={Link} to={'/statistic'} variant={"contained"} color={"primary"}>Statistic</Button>
         </Grid>
       </Grid>
     </Box>
